@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="shkolaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="dnevnik">
+    <Key>
+      <PropertyRef Name="id_dnevnik" />
+    </Key>
+    <Property Name="id_dnevnik" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_ychenik" Type="Int32" />
+    <Property Name="id_predmet" Type="Int32" />
+    <Property Name="osenka" Type="Int32" />
+    <NavigationProperty Name="predmet" Relationship="Self.FK_dnevnik_predmet" FromRole="dnevnik" ToRole="predmet" />
+    <NavigationProperty Name="ycheniki" Relationship="Self.FK_dnevnik_ycheniki" FromRole="dnevnik" ToRole="ycheniki" />
+  </EntityType>
+  <EntityType Name="opt_rab">
+    <Key>
+      <PropertyRef Name="id_opt_rab" />
+    </Key>
+    <Property Name="id_opt_rab" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_prepod" Type="Int32" />
+    <Property Name="goda" Type="Int32" />
+    <NavigationProperty Name="prepod" Relationship="Self.FK_opt_rab_prepod" FromRole="opt_rab" ToRole="prepod" />
+  </EntityType>
+  <EntityType Name="predmet">
+    <Key>
+      <PropertyRef Name="id_predmet" />
+    </Key>
+    <Property Name="id_predmet" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="masvanie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="dnevnik" Relationship="Self.FK_dnevnik_predmet" FromRole="predmet" ToRole="dnevnik" />
+    <NavigationProperty Name="prepod" Relationship="Self.FK_prepod_predmet" FromRole="predmet" ToRole="prepod" />
+    <NavigationProperty Name="ycheb_chas" Relationship="Self.FK_ycheb_chas_predmet" FromRole="predmet" ToRole="ycheb_chas" />
+  </EntityType>
+  <EntityType Name="prepod">
+    <Key>
+      <PropertyRef Name="id_prepod" />
+    </Key>
+    <Property Name="id_prepod" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fam" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ima" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="otchectvo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="id_predmet" Type="Int32" />
+    <NavigationProperty Name="opt_rab" Relationship="Self.FK_opt_rab_prepod" FromRole="prepod" ToRole="opt_rab" />
+    <NavigationProperty Name="predmet" Relationship="Self.FK_prepod_predmet" FromRole="prepod" ToRole="predmet" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="ycheb_chas">
+    <Key>
+      <PropertyRef Name="id_ycheb_chas" />
+    </Key>
+    <Property Name="id_ycheb_chas" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_predmet" Type="Int32" />
+    <Property Name="kolva_chasov" Type="Int32" />
+    <NavigationProperty Name="predmet" Relationship="Self.FK_ycheb_chas_predmet" FromRole="ycheb_chas" ToRole="predmet" />
+  </EntityType>
+  <EntityType Name="ycheniki">
+    <Key>
+      <PropertyRef Name="id_ycheniki" />
+    </Key>
+    <Property Name="id_ycheniki" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fam" Type="Binary" MaxLength="50" FixedLength="false" />
+    <Property Name="ima" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="otchectvo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="data" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="dnevnik" Relationship="Self.FK_dnevnik_ycheniki" FromRole="ycheniki" ToRole="dnevnik" />
+  </EntityType>
+  <Association Name="FK_dnevnik_predmet">
+    <End Role="predmet" Type="Self.predmet" Multiplicity="0..1" />
+    <End Role="dnevnik" Type="Self.dnevnik" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="predmet">
+        <PropertyRef Name="id_predmet" />
+      </Principal>
+      <Dependent Role="dnevnik">
+        <PropertyRef Name="id_predmet" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dnevnik_ycheniki">
+    <End Role="ycheniki" Type="Self.ycheniki" Multiplicity="0..1" />
+    <End Role="dnevnik" Type="Self.dnevnik" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ycheniki">
+        <PropertyRef Name="id_ycheniki" />
+      </Principal>
+      <Dependent Role="dnevnik">
+        <PropertyRef Name="id_ychenik" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_opt_rab_prepod">
+    <End Role="prepod" Type="Self.prepod" Multiplicity="0..1" />
+    <End Role="opt_rab" Type="Self.opt_rab" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="prepod">
+        <PropertyRef Name="id_prepod" />
+      </Principal>
+      <Dependent Role="opt_rab">
+        <PropertyRef Name="id_prepod" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_prepod_predmet">
+    <End Role="predmet" Type="Self.predmet" Multiplicity="0..1" />
+    <End Role="prepod" Type="Self.prepod" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="predmet">
+        <PropertyRef Name="id_predmet" />
+      </Principal>
+      <Dependent Role="prepod">
+        <PropertyRef Name="id_predmet" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ycheb_chas_predmet">
+    <End Role="predmet" Type="Self.predmet" Multiplicity="0..1" />
+    <End Role="ycheb_chas" Type="Self.ycheb_chas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="predmet">
+        <PropertyRef Name="id_predmet" />
+      </Principal>
+      <Dependent Role="ycheb_chas">
+        <PropertyRef Name="id_predmet" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="shkolaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="dnevnik" EntityType="Self.dnevnik" />
+    <EntitySet Name="opt_rab" EntityType="Self.opt_rab" />
+    <EntitySet Name="predmet" EntityType="Self.predmet" />
+    <EntitySet Name="prepod" EntityType="Self.prepod" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="ycheb_chas" EntityType="Self.ycheb_chas" />
+    <EntitySet Name="ycheniki" EntityType="Self.ycheniki" />
+    <AssociationSet Name="FK_dnevnik_predmet" Association="Self.FK_dnevnik_predmet">
+      <End Role="predmet" EntitySet="predmet" />
+      <End Role="dnevnik" EntitySet="dnevnik" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dnevnik_ycheniki" Association="Self.FK_dnevnik_ycheniki">
+      <End Role="ycheniki" EntitySet="ycheniki" />
+      <End Role="dnevnik" EntitySet="dnevnik" />
+    </AssociationSet>
+    <AssociationSet Name="FK_opt_rab_prepod" Association="Self.FK_opt_rab_prepod">
+      <End Role="prepod" EntitySet="prepod" />
+      <End Role="opt_rab" EntitySet="opt_rab" />
+    </AssociationSet>
+    <AssociationSet Name="FK_prepod_predmet" Association="Self.FK_prepod_predmet">
+      <End Role="predmet" EntitySet="predmet" />
+      <End Role="prepod" EntitySet="prepod" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ycheb_chas_predmet" Association="Self.FK_ycheb_chas_predmet">
+      <End Role="predmet" EntitySet="predmet" />
+      <End Role="ycheb_chas" EntitySet="ycheb_chas" />
+    </AssociationSet>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(shkolaModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(shkolaModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+  </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+</Schema>

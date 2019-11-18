@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище shkolaModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="dnevnik">
+    <Key>
+      <PropertyRef Name="id_dnevnik" />
+    </Key>
+    <Property Name="id_dnevnik" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_ychenik" Type="int" />
+    <Property Name="id_predmet" Type="int" />
+    <Property Name="osenka" Type="int" />
+  </EntityType>
+  <EntityType Name="opt_rab">
+    <Key>
+      <PropertyRef Name="id_opt_rab" />
+    </Key>
+    <Property Name="id_opt_rab" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_prepod" Type="int" />
+    <Property Name="goda" Type="int" />
+  </EntityType>
+  <EntityType Name="predmet">
+    <Key>
+      <PropertyRef Name="id_predmet" />
+    </Key>
+    <Property Name="id_predmet" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="masvanie" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="prepod">
+    <Key>
+      <PropertyRef Name="id_prepod" />
+    </Key>
+    <Property Name="id_prepod" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fam" Type="varchar" MaxLength="50" />
+    <Property Name="ima" Type="varchar" MaxLength="50" />
+    <Property Name="otchectvo" Type="varchar" MaxLength="50" />
+    <Property Name="id_predmet" Type="int" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="ycheb_chas">
+    <Key>
+      <PropertyRef Name="id_ycheb_chas" />
+    </Key>
+    <Property Name="id_ycheb_chas" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_predmet" Type="int" />
+    <Property Name="kolva_chasov" Type="int" />
+  </EntityType>
+  <EntityType Name="ycheniki">
+    <Key>
+      <PropertyRef Name="id_ycheniki" />
+    </Key>
+    <Property Name="id_ycheniki" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fam" Type="varbinary" MaxLength="50" />
+    <Property Name="ima" Type="varchar" MaxLength="50" />
+    <Property Name="otchectvo" Type="varchar" MaxLength="50" />
+    <Property Name="data" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_dnevnik_predmet">
+    <End Role="predmet" Type="Self.predmet" Multiplicity="0..1" />
+    <End Role="dnevnik" Type="Self.dnevnik" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="predmet">
+        <PropertyRef Name="id_predmet" />
+      </Principal>
+      <Dependent Role="dnevnik">
+        <PropertyRef Name="id_predmet" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dnevnik_ycheniki">
+    <End Role="ycheniki" Type="Self.ycheniki" Multiplicity="0..1" />
+    <End Role="dnevnik" Type="Self.dnevnik" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ycheniki">
+        <PropertyRef Name="id_ycheniki" />
+      </Principal>
+      <Dependent Role="dnevnik">
+        <PropertyRef Name="id_ychenik" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_opt_rab_prepod">
+    <End Role="prepod" Type="Self.prepod" Multiplicity="0..1" />
+    <End Role="opt_rab" Type="Self.opt_rab" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="prepod">
+        <PropertyRef Name="id_prepod" />
+      </Principal>
+      <Dependent Role="opt_rab">
+        <PropertyRef Name="id_prepod" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_prepod_predmet">
+    <End Role="predmet" Type="Self.predmet" Multiplicity="0..1" />
+    <End Role="prepod" Type="Self.prepod" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="predmet">
+        <PropertyRef Name="id_predmet" />
+      </Principal>
+      <Dependent Role="prepod">
+        <PropertyRef Name="id_predmet" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ycheb_chas_predmet">
+    <End Role="predmet" Type="Self.predmet" Multiplicity="0..1" />
+    <End Role="ycheb_chas" Type="Self.ycheb_chas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="predmet">
+        <PropertyRef Name="id_predmet" />
+      </Principal>
+      <Dependent Role="ycheb_chas">
+        <PropertyRef Name="id_predmet" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="Хранилище shkolaModelContainer">
+    <EntitySet Name="dnevnik" EntityType="Self.dnevnik" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="opt_rab" EntityType="Self.opt_rab" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="predmet" EntityType="Self.predmet" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="prepod" EntityType="Self.prepod" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ycheb_chas" EntityType="Self.ycheb_chas" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ycheniki" EntityType="Self.ycheniki" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_dnevnik_predmet" Association="Self.FK_dnevnik_predmet">
+      <End Role="predmet" EntitySet="predmet" />
+      <End Role="dnevnik" EntitySet="dnevnik" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dnevnik_ycheniki" Association="Self.FK_dnevnik_ycheniki">
+      <End Role="ycheniki" EntitySet="ycheniki" />
+      <End Role="dnevnik" EntitySet="dnevnik" />
+    </AssociationSet>
+    <AssociationSet Name="FK_opt_rab_prepod" Association="Self.FK_opt_rab_prepod">
+      <End Role="prepod" EntitySet="prepod" />
+      <End Role="opt_rab" EntitySet="opt_rab" />
+    </AssociationSet>
+    <AssociationSet Name="FK_prepod_predmet" Association="Self.FK_prepod_predmet">
+      <End Role="predmet" EntitySet="predmet" />
+      <End Role="prepod" EntitySet="prepod" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ycheb_chas_predmet" Association="Self.FK_ycheb_chas_predmet">
+      <End Role="predmet" EntitySet="predmet" />
+      <End Role="ycheb_chas" EntitySet="ycheb_chas" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
