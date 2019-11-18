@@ -1,0 +1,10 @@
+C:\Users\Мария\source\repos\9090909\9090909\bin\Debug\9090909.exe.config
+C:\Users\Мария\source\repos\9090909\9090909\bin\Debug\9090909.exe
+C:\Users\Мария\source\repos\9090909\9090909\bin\Debug\9090909.pdb
+C:\Users\Мария\source\repos\9090909\9090909\obj\Debug\9090909.csprojAssemblyReference.cache
+C:\Users\Мария\source\repos\9090909\9090909\obj\Debug\_9090909.Form1.resources
+C:\Users\Мария\source\repos\9090909\9090909\obj\Debug\_9090909.Properties.Resources.resources
+C:\Users\Мария\source\repos\9090909\9090909\obj\Debug\9090909.csproj.GenerateResource.cache
+C:\Users\Мария\source\repos\9090909\9090909\obj\Debug\9090909.csproj.CoreCompileInputs.cache
+C:\Users\Мария\source\repos\9090909\9090909\obj\Debug\9090909.exe
+C:\Users\Мария\source\repos\9090909\9090909\obj\Debug\9090909.pdb
